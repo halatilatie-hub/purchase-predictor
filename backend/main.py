@@ -9,6 +9,7 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
+MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
 
 app = FastAPI(title="Purchase Predictor API")
 
@@ -47,6 +48,12 @@ async def upload_receipt(file: UploadFile = File(...)):
         )
 
     contents = await file.read()
+    if len(contents) > MAX_FILE_SIZE_BYTES:
+        raise HTTPException(
+            status_code=400,
+            detail="File exceeds the 10 MB limit.",
+        )
+
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
     saved_name = file.filename

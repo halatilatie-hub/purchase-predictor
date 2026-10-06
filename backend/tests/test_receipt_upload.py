@@ -35,3 +35,18 @@ def test_upload_receipt_rejects_non_image(monkeypatch, tmp_path):
 
     assert response.status_code == 400
     assert "image" in response.json()["detail"].lower()
+
+
+def test_upload_receipt_rejects_files_larger_than_10mb(monkeypatch, tmp_path):
+    upload_dir = tmp_path / "receipts"
+    monkeypatch.setattr("main.UPLOAD_DIR", upload_dir)
+
+    oversized_bytes = b"a" * (10 * 1024 * 1024 + 1)
+
+    response = client.post(
+        "/upload-receipt",
+        files={"file": ("receipt.png", oversized_bytes, "image/png")},
+    )
+
+    assert response.status_code == 400
+    assert "10 mb" in response.json()["detail"].lower()
