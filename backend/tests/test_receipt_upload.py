@@ -20,7 +20,11 @@ def test_upload_receipt_saves_valid_image(tmp_path, monkeypatch):
     assert response.status_code == 200
     payload = response.json()
     assert payload["status"] == "uploaded"
+    assert payload["id"]
     assert payload["filename"] == "receipt.png"
+    assert payload["size"] == len(b"fake-image-bytes")
+    assert payload["content_type"] == "image/png"
+    assert payload["uploaded_at"]
     assert (upload_dir / "receipt.png").exists()
 
 

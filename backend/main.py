@@ -1,4 +1,6 @@
+from datetime import datetime, timezone
 from pathlib import Path
+import uuid
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -60,11 +62,16 @@ async def upload_receipt(file: UploadFile = File(...)):
     saved_path = UPLOAD_DIR / saved_name
     saved_path.write_bytes(contents)
 
+    uploaded_at = datetime.now(timezone.utc).isoformat()
+    upload_id = str(uuid.uuid4())
+
     return {
+        "id": upload_id,
         "status": "uploaded",
         "filename": file.filename,
         "saved_filename": saved_name,
         "content_type": content_type,
         "size": len(contents),
+        "uploaded_at": uploaded_at,
         "message": "Receipt uploaded successfully",
     }
