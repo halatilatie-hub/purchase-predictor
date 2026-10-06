@@ -1,0 +1,25 @@
+.connection-status {
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 32px;
+  border: 1px solid #dfe3ea;
+  border-radius: 12px;
+  background: #f9fafb;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+}
+
+.connection-status h1 {
+  margin-top: 0;
+  font-size: 1.7rem;
+}
+
+.connection-status p {
+  margin: 12px 0;
+  color: #1f2937;
+}
+
+.connection-status .error {
+  color: #b91c1c;
+  font-weight: 600;
+}
