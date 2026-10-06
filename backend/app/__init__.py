@@ -1,0 +1,1 @@
+"""Purchase Predictor application package."""
