@@ -1,5 +1,5 @@
 .connection-status {
-  max-width: 700px;
+  max-width: 600px;
   margin: 80px auto;
   padding: 32px;
   border: 1px solid #dfe3ea;
@@ -9,9 +9,9 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
 }
 
-.connection-status h1,
-.connection-status h2 {
+.connection-status h1 {
   margin-top: 0;
+  font-size: 1.7rem;
 }
 
 .connection-status p {
@@ -23,60 +23,3 @@
   color: #b91c1c;
   font-weight: 600;
 }
-
-.upload-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.upload-label {
-  font-weight: 600;
-}
-
-input[type='file'] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: white;
-}
-
-.preview-image {
-  width: 100%;
-  max-height: 320px;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  background: white;
-}
-
-.file-name {
-  color: #374151;
-}
-
-button {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 8px;
-  background: #2563eb;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button:disabled {
-  background: #93c5fd;
-  cursor: not-allowed;
-}
-
-.upload-result {
-  margin-top: 24px;
-  padding: 16px;
-  border-radius: 8px;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-}
-
