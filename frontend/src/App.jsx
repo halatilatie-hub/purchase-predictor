@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024
+const ALLOWED_FILE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
+const ALLOWED_FILE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp'])
+
 function App() {
   const [status, setStatus] = useState('Checking backend connection...')
   const [error, setError] = useState('')
@@ -44,8 +48,19 @@ function App() {
       return
     }
 
-    if (!file.type.startsWith('image/')) {
-      setError('Please select a valid image file.')
+    const fileExtension = file.name ? file.name.substring(file.name.lastIndexOf('.')).toLowerCase() : ''
+    const isAllowedType = ALLOWED_FILE_TYPES.has(file.type) || file.type.startsWith('image/')
+    const isAllowedExtension = ALLOWED_FILE_EXTENSIONS.has(fileExtension)
+
+    if (!isAllowedType || !isAllowedExtension) {
+      setError('Invalid file type. Please upload a JPG, JPEG, PNG, or WEBP image.')
+      setSelectedFile(null)
+      setPreviewUrl('')
+      return
+    }
+
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      setError('File exceeds the 10 MB limit. Please upload an image smaller than 10 MB.')
       setSelectedFile(null)
       setPreviewUrl('')
       return
@@ -62,6 +77,16 @@ function App() {
       return
     }
 
+    if (!ALLOWED_FILE_TYPES.has(selectedFile.type) && !selectedFile.type.startsWith('image/')) {
+      setError('Invalid file type. Please upload a JPG, JPEG, PNG, or WEBP image.')
+      return
+    }
+
+    if (selectedFile.size > MAX_FILE_SIZE_BYTES) {
+      setError('File exceeds the 10 MB limit. Please upload an image smaller than 10 MB.')
+      return
+    }
+
     setUploading(true)
     setError('')
 
@@ -74,10 +99,10 @@ function App() {
         body: formData,
       })
 
-      const data = await response.json()
+      const data = await response.json().catch(() => ({}))
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Upload failed')
+        throw new Error(data.detail || 'Upload failed. Please try again.')
       }
 
       setUploadedFile(data)
