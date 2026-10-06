@@ -46,14 +46,14 @@ async def upload_receipt(file: UploadFile = File(...)):
     if suffix not in ALLOWED_EXTENSIONS or content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
             status_code=400,
-            detail="Only image files are allowed (jpg, jpeg, png, webp).",
+            detail="Invalid file type. Please upload a JPG, JPEG, PNG, or WEBP image.",
         )
 
     contents = await file.read()
     if len(contents) > MAX_FILE_SIZE_BYTES:
         raise HTTPException(
             status_code=400,
-            detail="File exceeds the 10 MB limit.",
+            detail="File exceeds the 10 MB limit. Please upload an image smaller than 10 MB.",
         )
 
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)

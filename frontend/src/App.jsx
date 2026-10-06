@@ -53,14 +53,14 @@ function App() {
     const isAllowedExtension = ALLOWED_FILE_EXTENSIONS.has(fileExtension)
 
     if (!isAllowedType || !isAllowedExtension) {
-      setError('Please select a valid image file type: JPG, JPEG, PNG, or WEBP.')
+      setError('Invalid file type. Please upload a JPG, JPEG, PNG, or WEBP image.')
       setSelectedFile(null)
       setPreviewUrl('')
       return
     }
 
     if (file.size > MAX_FILE_SIZE_BYTES) {
-      setError('The selected file is too large. Please upload an image under 10 MB.')
+      setError('File exceeds the 10 MB limit. Please upload an image smaller than 10 MB.')
       setSelectedFile(null)
       setPreviewUrl('')
       return
@@ -78,12 +78,12 @@ function App() {
     }
 
     if (!ALLOWED_FILE_TYPES.has(selectedFile.type) && !selectedFile.type.startsWith('image/')) {
-      setError('Please select a valid image file type: JPG, JPEG, PNG, or WEBP.')
+      setError('Invalid file type. Please upload a JPG, JPEG, PNG, or WEBP image.')
       return
     }
 
     if (selectedFile.size > MAX_FILE_SIZE_BYTES) {
-      setError('The selected file is too large. Please upload an image under 10 MB.')
+      setError('File exceeds the 10 MB limit. Please upload an image smaller than 10 MB.')
       return
     }
 
@@ -99,10 +99,10 @@ function App() {
         body: formData,
       })
 
-      const data = await response.json()
+      const data = await response.json().catch(() => ({}))
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Upload failed')
+        throw new Error(data.detail || 'Upload failed. Please try again.')
       }
 
       setUploadedFile(data)
